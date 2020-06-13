@@ -15,6 +15,9 @@ public class KstreamAppApplication implements CommandLineRunner {
 	@Autowired
 	AppConfig appConfig;
 
+	@Autowired
+	WordCountStream wordCountStream;
+
 	public static void main(String[] args) {
 		LOG.info("STARTING THE APPLICATION");
 		SpringApplication.run(KstreamAppApplication.class, args);
@@ -32,6 +35,8 @@ public class KstreamAppApplication implements CommandLineRunner {
 		System.out.println(appConfig.getUrl());
 		System.out.println(appConfig.getUsername());
 		System.out.println(appConfig.getPassword());
+
+		wordCountStream.runWordCount();
 		
 
 	}

@@ -14,9 +14,12 @@
 	<name>kstreamApp</name>
 	<description>Demo project for Spring Boot</description>
 
-	<properties>
+	<properties>        
+        <avro.version>1.9.1</avro.version>        
 		<java.version>1.8</java.version>
-	</properties>
+		<kafka.version>2.4.0</kafka.version>
+        <confluent.version>5.4.0</confluent.version>
+   </properties>
 
 	<dependencies>
 		<dependency>
@@ -35,6 +38,37 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		
+		<dependency>
+			<groupId>io.confluent</groupId>
+			<artifactId>kafka-streams-avro-serde</artifactId>
+			<version>${confluent.version}</version>
+		</dependency>
+		<dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+            <version>${confluent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-schema-registry-client</artifactId>
+            <version>${confluent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-streams</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+
+
+
+
 	</dependencies>
 
 	<build>

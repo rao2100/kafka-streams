@@ -1,3 +1,5 @@
 url: http://website.com
 username: rao
 password: rao
+bootstrapserver: odfhost1
+schemaregistry: http://website.com
