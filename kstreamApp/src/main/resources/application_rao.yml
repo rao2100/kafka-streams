@@ -1,5 +1,3 @@
-usecase: wordcount
-
 # kafka
 bootstrapServers: "odfhost1:9092"
 schemaRegistryUrl: "http://odfhost1:8081"
@@ -7,6 +5,6 @@ schemaRegistryUrl: "http://odfhost1:8081"
 inputTopic: "streams-plaintext-input"
 outputTopic: "streams-wordcount-output"
 
-appId: producer_simple
+usecase: rao
 
 

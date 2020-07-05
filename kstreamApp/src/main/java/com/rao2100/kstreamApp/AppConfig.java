@@ -7,33 +7,74 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppConfig {
 
-    String url;
-    String username;
-    String password;
+ 
+    String bootstrapServers;
+    String schemaRegistryUrl;
+    String inputTopic;
+    String outputTopic;
+    String appId;
+    int produceEventCount;
 
-    public String getUrl() {
-        return url;
+
+    public String getBootstrapServers() {
+        return bootstrapServers;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setBootstrapServers(String bootstrapServers) {
+        this.bootstrapServers = bootstrapServers;
     }
 
-    public String getUsername() {
-        return username;
+    public String getSchemaRegistryUrl() {
+        return schemaRegistryUrl;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setSchemaRegistryUrl(String schemaRegistryUrl) {
+        this.schemaRegistryUrl = schemaRegistryUrl;
     }
 
-    public String getPassword() {
-        return password;
+    public String getInputTopic() {
+        return inputTopic;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setInputTopic(String inputTopic) {
+        this.inputTopic = inputTopic;
     }
+
+    public String getOutputTopic() {
+        return outputTopic;
+    }
+
+    public void setOutputTopic(String outputTopic) {
+        this.outputTopic = outputTopic;
+    }
+
+    public int getProduceEventCount() {
+        return produceEventCount;
+    }
+
+    public void setProduceEventCount(int produceEventCount) {
+        this.produceEventCount = produceEventCount;
+    }
+    
+
+    @Override
+    public String toString() {
+        return "AppConfig [bootstrapServers=" + bootstrapServers + ", inputTopic=" + inputTopic + ", outputTopic="
+                + outputTopic + ", produceEventCount=" + produceEventCount + ", schemaRegistryUrl=" + schemaRegistryUrl
+                + "]";
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    
+    
+    
     
     
 }

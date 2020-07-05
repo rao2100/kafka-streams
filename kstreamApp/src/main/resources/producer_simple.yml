@@ -1,0 +1,14 @@
+usecase: producer_simple
+
+
+# kafka
+bootstrapServers: "odfhost1:9092"
+schemaRegistryUrl: "http://odfhost1:8081"
+
+appId: producer_simple
+# topics
+inputTopic: "input-producer"
+# wcInputTopic: "streams-plaintext-input"
+# outputTopic: "streams-wordcount-output"
+
+produceEventCount: 10000

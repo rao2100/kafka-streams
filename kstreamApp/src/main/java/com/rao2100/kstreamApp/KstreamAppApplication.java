@@ -6,17 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan(value = {"com.rao2100"})
 public class KstreamAppApplication implements CommandLineRunner {
 
 	private static Logger LOG = LoggerFactory.getLogger(KstreamAppApplication.class);
 
-	@Autowired
-	AppConfig appConfig;
+	// @Autowired
+	// AppConfig appConfig;
 
 	@Autowired
-	WordCountStream wordCountStream;
+	Runnable runnable; 
+
+	// @Autowired
+	// WordCountStream wordCountStream;
 
 	public static void main(String[] args) {
 		LOG.info("STARTING THE APPLICATION");
@@ -26,19 +31,14 @@ public class KstreamAppApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		LOG.info("EXECUTING : command line runner");
-  
-        for (int i = 0; i < args.length; ++i) {
-            LOG.info("args[{}]: {}", i, args[i]);
-		}
-
-		System.out.println(appConfig.getUrl());
-		System.out.println(appConfig.getUsername());
-		System.out.println(appConfig.getPassword());
-
-		wordCountStream.runWordCount();
 		
+		LOG.info("EXECUTING : command line runner");
+		// wordCountStream.runWordCount();
+		// wordCountStream.countWords();
 
+		runnable.run();
+		
+		
 	}
 
 }

@@ -6,3 +6,6 @@ cat /tmp/file-input.txt | kafka-console-producer --broker-list localhost:9092 --
 kafka-console-consumer --bootstrap-server localhost:9092 --topic streams-plaintext-input --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true 
 
 kafka-console-consumer --bootstrap-server localhost:9092 --topic streams-wordcount-output --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
+
+
+java -jar target/kstreamApp-0.0.1-SNAPSHOT.jar --spring.config.location=/home/ansible/Github/kafka-streams/kstreamApp/src/main/resources/application_rao.yml

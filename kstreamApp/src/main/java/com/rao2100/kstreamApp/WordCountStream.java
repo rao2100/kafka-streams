@@ -1,5 +1,10 @@
 package com.rao2100.kstreamApp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import org.apache.kafka.common.serialization.Serdes;
@@ -15,30 +20,44 @@ import java.util.Properties;
 import java.util.regex.Pattern;
 
 @Component
-public class WordCountStream {
+@ConditionalOnProperty(name = "usecase", havingValue = "wordcount", matchIfMissing = true)
+public class WordCountStream implements Runnable{
+
+    private static Logger LOG = LoggerFactory.getLogger(WordCountStream.class);
+
+    @Autowired
+    AppConfig appConfig;
+    
+ 
 
     public void countWords() {
 
-        System.out.println("WordCountStream");
+        LOG.info("########################################");
+        LOG.info("running WordCountStream");
+        LOG.info("########################################");
 
     }
 
-    static final String inputTopic = "streams-plaintext-input";
-    static final String outputTopic = "streams-wordcount-output";
+    
+
+    // final String inputTopic = appConfig.getWcInputTopic();
+    // final String outputTopic = appConfig.getWcOutputTopic();
 
     /**
      * The Streams application as a whole can be launched like any normal Java
      * application that has a `main()` method.
      */
     public void runWordCount() {
-        final String bootstrapServers = "odfhost1:9092";
+        // final String bootstrapServers = "odfhost1:9092";
+        // final String inputTopic = appConfig.getWcInputTopic();
+        // final String outputTopic = appConfig.getWcOutputTopic();
 
         // Configure the Streams application.
-        final Properties streamsConfiguration = getStreamsConfiguration(bootstrapServers);
+        final Properties streamsConfiguration = this.getStreamsConfiguration(appConfig.getBootstrapServers());
 
         // Define the processing topology of the Streams application.
         final StreamsBuilder builder = new StreamsBuilder();
-        createWordCountStream(builder);
+        this.createWordCountStream(builder, appConfig.getInputTopic(), appConfig.getOutputTopic());
         final KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
 
         // Always (and unconditionally) clean local state prior to starting the
@@ -79,7 +98,7 @@ public class WordCountStream {
      * @param bootstrapServers Kafka cluster address
      * @return Properties getStreamsConfiguration
      */
-    static Properties getStreamsConfiguration(final String bootstrapServers) {
+    private Properties getStreamsConfiguration(final String bootstrapServers) {
         final Properties streamsConfiguration = new Properties();
         // Give the Streams application a unique name. The name must be unique in the
         // Kafka cluster
@@ -107,7 +126,7 @@ public class WordCountStream {
      *
      * @param builder StreamsBuilder to use
      */
-    static void createWordCountStream(final StreamsBuilder builder) {
+    private void createWordCountStream(final StreamsBuilder builder, final String inputTopic, final String outputTopic) {
         // Construct a `KStream` from the input topic "streams-plaintext-input", where
         // message values
         // represent lines of text (for the sake of this example, we ignore whatever may
@@ -137,6 +156,13 @@ public class WordCountStream {
 
         // Write the `KTable<String, Long>` to the output topic.
         wordCounts.toStream().to(outputTopic, Produced.with(Serdes.String(), Serdes.Long()));
+    }
+
+    @Override
+    public void run() {
+        // TODO Auto-generated method stub
+        countWords();
+
     }
 
 }
