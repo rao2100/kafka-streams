@@ -11,4 +11,4 @@ inputTopic: "input-producer"
 # wcInputTopic: "streams-plaintext-input"
 # outputTopic: "streams-wordcount-output"
 
-produceEventCount: 10000
+produceEventCount: 100

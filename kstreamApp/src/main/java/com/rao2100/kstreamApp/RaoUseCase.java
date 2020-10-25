@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @ConditionalOnProperty(name = "usecase", havingValue = "rao")
 public class RaoUseCase implements Runnable{
 
-    private static Logger LOG = LoggerFactory.getLogger(WordCountStream.class);
+    private static Logger LOG = LoggerFactory.getLogger(RaoUseCase.class);
 
     @Override
     public void run() {

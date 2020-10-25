@@ -1,0 +1,7 @@
+#!/bin/bash
+TOPIC=streams-plaintext-input
+kafka_path=/home/ansible/programs/confluent-5.5.1/bin/
+sudo $kafka_path/kafka-console-consumer --from-beginning --bootstrap-server localhost:9092 --topic $TOPIC \
+        --property print.key=true \
+        --property print.timestamp=true \
+         --formatter kafka.tools.DefaultMessageFormatter
