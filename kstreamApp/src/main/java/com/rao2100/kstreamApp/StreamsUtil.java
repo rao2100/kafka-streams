@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 import io.confluent.kafka.streams.serdes.avro.GenericAvroSerde;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.streams.StreamsConfig;
 
 public class StreamsUtil {
@@ -26,6 +27,7 @@ public class StreamsUtil {
         // streamsConfiguration.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
         // streamsConfiguration.put(StreamsConfig.STATE_DIR_CONFIG,
         // "/tmp/kafka-streams/wordcount");
+        // streamsConfiguration.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         return streamsConfiguration;
     }
 
