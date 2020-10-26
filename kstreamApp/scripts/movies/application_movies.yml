@@ -1,0 +1,11 @@
+usecase: movies-track
+
+# kafka
+bootstrapServers: "localhost:9092"
+schemaRegistryUrl: "http://localhost:8081"
+
+inputTopic: "streams-movies-input"
+intermediateTopic: "streams-movies-intermediate"
+outputTopic: "streams-movies-output"
+
+appId: movies-track

@@ -1,0 +1,11 @@
+usecase: producer_movies
+
+# kafka
+bootstrapServers: "localhost:9092"
+schemaRegistryUrl: "http://localhost:8081"
+
+appId: producer_movies
+# topics
+inputTopic: "streams-movies-input"
+
+produceEventCount: 10

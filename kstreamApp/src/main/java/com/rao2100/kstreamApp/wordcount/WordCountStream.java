@@ -48,7 +48,7 @@ public class WordCountStream implements Runnable{
         LOG.info("running WordCountStream");
         LOG.info("########################################");
  
-        Properties streamsConfiguration = StreamsUtil.getStreamsConfiguration(appConfig.getBootstrapServers(), appConfig.getAppId());
+        Properties streamsConfiguration = StreamsUtil.getStreamsConfiguration(appConfig.getBootstrapServers(), appConfig.getSchemaRegistryUrl(), appConfig.getAppId());
         streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         final StreamsBuilder builder = new StreamsBuilder();

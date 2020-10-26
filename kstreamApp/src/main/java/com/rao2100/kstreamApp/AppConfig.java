@@ -12,6 +12,7 @@ public class AppConfig {
     String schemaRegistryUrl;
     String inputTopic;
     String outputTopic;
+    String intermediateTopic;
     String appId;
     int produceEventCount;
 
@@ -56,6 +57,7 @@ public class AppConfig {
         this.produceEventCount = produceEventCount;
     }
     
+    
 
     @Override
     public String toString() {
@@ -72,8 +74,14 @@ public class AppConfig {
         this.appId = appId;
     }
 
-    
-    
+    public String getIntermediateTopic() {
+        return intermediateTopic;
+    }
+
+    public void setIntermediateTopic(String intermediateTopic) {
+        this.intermediateTopic = intermediateTopic;
+    }
+
     
     
     

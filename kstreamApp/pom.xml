@@ -17,8 +17,8 @@
 	<properties>        
         <avro.version>1.9.1</avro.version>        
 		<java.version>1.8</java.version>
-		<kafka.version>2.4.0</kafka.version>
-        <confluent.version>5.4.0</confluent.version>
+		<kafka.version>2.5.0</kafka.version>
+        <confluent.version>5.5.1</confluent.version>
    </properties>
 
 	<dependencies>
