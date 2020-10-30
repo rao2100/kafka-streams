@@ -1,3 +1,18 @@
+# Introduction
+Simple spring boot based kafka streams examples for learning
+
+# To build
+```bash
+mvn clean install
+```
+# Start Kafka Cluster 
+```bash
+cd ./scripts
+docker-compose up -d
+```
+
+
+# Examples
 ## Wordcount
 ### Features
 * DSL - foreach, flatMapValues, groupBy, count
