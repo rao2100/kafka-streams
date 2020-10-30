@@ -27,14 +27,16 @@ public class StreamsUtil {
         // streamsConfiguration.put(StreamsConfig.CACHE_MAX_BYTES_BUFFERING_CONFIG, 0);
         // streamsConfiguration.put(StreamsConfig.STATE_DIR_CONFIG,
         // "/tmp/kafka-streams/wordcount");
-        // streamsConfiguration.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        // streamsConfiguration.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
+        // "earliest");
         return streamsConfiguration;
     }
 
     public static GenericAvroSerde getGenericAvroServer(final String schemaRegistryServers, final Boolean isKeySerde) {
         GenericAvroSerde genericAvroSerde = new GenericAvroSerde();
-        genericAvroSerde.configure(Collections.singletonMap(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG,
-        schemaRegistryServers), isKeySerde);
+        genericAvroSerde.configure(
+                Collections.singletonMap(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryServers),
+                isKeySerde);
 
         return genericAvroSerde;
     }

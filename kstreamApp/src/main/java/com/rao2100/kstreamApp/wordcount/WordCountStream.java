@@ -17,6 +17,7 @@ import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Produced;
@@ -52,18 +53,29 @@ public class WordCountStream implements Runnable{
         streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         final StreamsBuilder builder = new StreamsBuilder();
-        this.createWordCountStream(builder, appConfig.getInputTopic(), appConfig.getOutputTopic());
-        final KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
+        Topology topology =  createWordCountTopology(builder, appConfig.getInputTopic(), appConfig.getOutputTopic());
+        final KafkaStreams streams = new KafkaStreams(topology, streamsConfiguration);
 
         streams.cleanUp();
+
+        LOG.info(topology.describe().toString());
+
+        LOG.info("Starting stream");
         streams.start();
-        Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            LOG.info("Shutting down stream");
+            streams.close();
+        }));
     }
 
 
-    private void createWordCountStream(final StreamsBuilder builder, final String inputTopic, final String outputTopic) {
+    private Topology createWordCountTopology(final StreamsBuilder builder, final String inputTopic, final String outputTopic) {
   
         final KStream<String, String> textLines = builder.stream(inputTopic, Consumed.with(stringSerde, stringSerde));
+        // print line for each record
+        textLines.foreach((k,v) -> System.out.println("key: " + k + " value: " + v));
+
+        // do wordcount
         final Pattern pattern = Pattern.compile("\\W+", Pattern.UNICODE_CHARACTER_CLASS);
         final KTable<String, Long> wordCounts = textLines
                 .flatMapValues(value -> Arrays.asList(pattern.split(value.toLowerCase())))
@@ -71,6 +83,8 @@ public class WordCountStream implements Runnable{
                 .count();
 
         wordCounts.toStream().to(outputTopic, Produced.with(stringSerde, longSerde));
+
+        return builder.build();
     }
 
     @Override

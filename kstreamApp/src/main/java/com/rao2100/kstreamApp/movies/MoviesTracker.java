@@ -16,6 +16,7 @@ import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Produced;
@@ -43,15 +44,22 @@ public class MoviesTracker implements Runnable {
 
         Properties streamsConfiguration = this.getStreamsConfig();
 
-        final StreamsBuilder builder = this.createStreamTopology(appConfig.getInputTopic(), appConfig.getOutputTopic());
-        final KafkaStreams streams = new KafkaStreams(builder.build(), streamsConfiguration);
+        final Topology topology = createStreamTopology(appConfig.getInputTopic(), appConfig.getOutputTopic());
+        final KafkaStreams streams = new KafkaStreams(topology, streamsConfiguration);
 
         streams.cleanUp();
+
+        LOG.info(topology.describe().toString());
+
+        LOG.info("Starting stream");
         streams.start();
-        Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            LOG.info("Shutting down stream");
+            streams.close();
+        }));
     }
 
-    private StreamsBuilder createStreamTopology(final String inputTopic, final String outputTopic) {
+    private Topology createStreamTopology(final String inputTopic, final String outputTopic) {
 
         StreamsBuilder builder = new StreamsBuilder();
 
@@ -71,7 +79,7 @@ public class MoviesTracker implements Runnable {
 
         aggregateSales.toStream().to(outputTopic, Produced.with(Serdes.String(), Serdes.Integer()));
 
-        return builder;
+        return builder.build();
     }
 
     private Properties getStreamsConfig() {
