@@ -14,7 +14,7 @@ import org.apache.kafka.streams.StreamsConfig;
 
 public class StreamsUtil {
 
-    private static Logger LOG = LoggerFactory.getLogger(ProducerSimple.class);
+    private static Logger LOG = LoggerFactory.getLogger(StreamsUtil.class);
 
     public static Properties getStreamsConfiguration(final String bootstrapServers, final String schemaRegistryServers,
             final String appId) {
