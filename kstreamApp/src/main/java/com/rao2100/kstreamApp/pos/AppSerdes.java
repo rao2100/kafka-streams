@@ -3,9 +3,9 @@ package com.rao2100.kstreamApp.pos;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.rao2100.kstreamApp.types.HadoopRecord;
-import com.rao2100.kstreamApp.types.Notification;
-import com.rao2100.kstreamApp.types.PosInvoice;
+import com.rao2100.kstreamApp.pos.types.HadoopRecord;
+import com.rao2100.kstreamApp.pos.types.Notification;
+import com.rao2100.kstreamApp.pos.types.PosInvoice;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 

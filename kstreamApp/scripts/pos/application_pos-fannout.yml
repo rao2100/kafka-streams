@@ -1,0 +1,15 @@
+usecase: pos-fannout
+
+# kafka
+bootstrapServers: "localhost:9092"
+schemaRegistryUrl: "http://localhost:8081"
+
+inputTopic: "streams-pos-input"
+intermediateTopic: "streams-movies-intermediate"
+outputTopic: "streams-movies-output"
+outputTopics: 
+  - "streams-shipment"
+  - "streams-loyalty"
+  - "streams-hadoop-sink"
+
+appId: pos-fannout

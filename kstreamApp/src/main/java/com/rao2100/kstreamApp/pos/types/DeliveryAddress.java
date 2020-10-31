@@ -1,4 +1,4 @@
-package com.rao2100.kstreamApp.types;
+package com.rao2100.kstreamApp.pos.types;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;

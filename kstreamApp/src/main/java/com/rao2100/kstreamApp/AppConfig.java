@@ -1,5 +1,7 @@
 package com.rao2100.kstreamApp;
 
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,7 @@ public class AppConfig {
     String schemaRegistryUrl;
     String inputTopic;
     String outputTopic;
+    List<String> outputTopics;
     String intermediateTopic;
     String appId;
     int produceEventCount;
@@ -80,6 +83,14 @@ public class AppConfig {
 
     public void setIntermediateTopic(String intermediateTopic) {
         this.intermediateTopic = intermediateTopic;
+    }
+
+    public List<String> getOutputTopics() {
+        return outputTopics;
+    }
+
+    public void setOutputTopics(List<String> outputTopics) {
+        this.outputTopics = outputTopics;
     }
 
     
