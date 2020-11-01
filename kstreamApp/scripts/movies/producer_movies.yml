@@ -8,4 +8,7 @@ appId: producer_movies
 # topics
 inputTopic: "streams-movies-input"
 
+schemas:
+  - "/home/ansible/Github/kafka-streams/kstreamApp/scripts/movies/movies.avsc"
+
 produceEventCount: 10

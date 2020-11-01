@@ -25,7 +25,7 @@ import org.apache.kafka.streams.kstream.Grouped;
 import org.apache.avro.generic.GenericRecord;
 
 import com.rao2100.kstreamApp.AppConfig;
-import com.rao2100.kstreamApp.StreamsUtil;
+import com.rao2100.kstreamApp.AppStreamsUtil;
 
 @Component
 @ConditionalOnProperty(name = "usecase", havingValue = "movies-track")
@@ -63,7 +63,7 @@ public class MoviesTracker implements Runnable {
 
         StreamsBuilder builder = new StreamsBuilder();
 
-        GenericAvroSerde genericAvroSerde = StreamsUtil.getGenericAvroServer(appConfig.getSchemaRegistryUrl(), false);
+        GenericAvroSerde genericAvroSerde = AppStreamsUtil.getGenericAvroServer(appConfig.getSchemaRegistryUrl(), false);
         final KStream<String, GenericRecord> moviesSales = builder.stream(inputTopic);
 
         KStream<String, GenericRecord> filteredSales = moviesSales
@@ -83,7 +83,7 @@ public class MoviesTracker implements Runnable {
     }
 
     private Properties getStreamsConfig() {
-        Properties streamsConfiguration = StreamsUtil.getStreamsConfiguration(appConfig.getBootstrapServers(),
+        Properties streamsConfiguration = AppStreamsUtil.getStreamsConfiguration(appConfig.getBootstrapServers(),
                 appConfig.getSchemaRegistryUrl(), appConfig.getAppId());
         streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, GenericAvroSerde.class);

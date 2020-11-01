@@ -27,7 +27,7 @@ import org.apache.kafka.streams.state.KeyValueStore;
 
 
 import com.rao2100.kstreamApp.AppConfig;
-import com.rao2100.kstreamApp.StreamsUtil;
+import com.rao2100.kstreamApp.AppStreamsUtil;
 
 @Component
 @ConditionalOnProperty(name = "usecase", havingValue = "wordcount", matchIfMissing = true)
@@ -49,7 +49,7 @@ public class WordCountStream implements Runnable{
         LOG.info("running WordCountStream");
         LOG.info("########################################");
  
-        Properties streamsConfiguration = StreamsUtil.getStreamsConfiguration(appConfig.getBootstrapServers(), appConfig.getSchemaRegistryUrl(), appConfig.getAppId());
+        Properties streamsConfiguration = AppStreamsUtil.getStreamsConfiguration(appConfig.getBootstrapServers(), appConfig.getSchemaRegistryUrl(), appConfig.getAppId());
         streamsConfiguration.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         streamsConfiguration.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         final StreamsBuilder builder = new StreamsBuilder();

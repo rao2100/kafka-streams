@@ -27,7 +27,7 @@ import org.apache.kafka.streams.kstream.Grouped;
 import org.apache.avro.generic.GenericRecord;
 
 import com.rao2100.kstreamApp.AppConfig;
-import com.rao2100.kstreamApp.StreamsUtil;
+import com.rao2100.kstreamApp.AppStreamsUtil;
 import com.rao2100.kstreamApp.pos.AppSerdes;
 import com.rao2100.kstreamApp.pos.types.PosInvoice;
 
@@ -90,7 +90,7 @@ public class PosFannout implements Runnable {
     }
 
     private Properties getStreamsConfig() {
-        Properties streamsConfiguration = StreamsUtil.getStreamsConfiguration(appConfig.getBootstrapServers(),
+        Properties streamsConfiguration = AppStreamsUtil.getStreamsConfiguration(appConfig.getBootstrapServers(),
                 appConfig.getSchemaRegistryUrl(), appConfig.getAppId());        
 
         return streamsConfiguration;

@@ -15,6 +15,7 @@ public class AppConfig {
     String inputTopic;
     String outputTopic;
     List<String> outputTopics;
+    List<String> Schemas;
     String intermediateTopic;
     String appId;
     int produceEventCount;
@@ -91,6 +92,14 @@ public class AppConfig {
 
     public void setOutputTopics(List<String> outputTopics) {
         this.outputTopics = outputTopics;
+    }
+
+    public List<String> getSchemas() {
+        return Schemas;
+    }
+
+    public void setSchemas(List<String> schemas) {
+        Schemas = schemas;
     }
 
     

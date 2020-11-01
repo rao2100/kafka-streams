@@ -1,0 +1,130 @@
+{
+    "type": "record",
+    "name": "PosInvoice",
+    "namespace": "com.rao2100.kstreamApp.pos.types",
+    "fields": [
+        {
+            "name": "invoiceNumber",
+            "type": "string"
+        },
+        {
+            "name": "createdTime",
+            "type": "long"
+        },
+        {
+            "name": "storeID",
+            "type": "string"
+        },
+        {
+            "name": "posID",
+            "type": "string"
+        },
+        {
+            "name": "cashierID",
+            "type": "string"
+        },
+        {
+            "name": "customerType",
+            "type": "string"
+        },
+        {
+            "name": "customerCardNo",
+            "type": "string"
+        },
+        {
+            "name": "totalAmount",
+            "type": "double"
+        },
+        {
+            "name": "numberOfItems",
+            "type": "int"
+        },
+        {
+            "name": "paymentMethod",
+            "type": "string"
+        },
+        {
+            "name": "taxableAmount",
+            "type": "double"
+        },
+        {
+            "name": "cGST",
+            "type": "double"
+        },
+        {
+            "name": "sGST",
+            "type": "double"
+        },
+        {
+            "name": "cESS",
+            "type": "double"
+        },
+        {
+            "name": "deliveryType",
+            "type": "string"
+        },
+        {
+            "name": "deliveryAddress",
+            "type": ["null",
+                {
+                "type": "record",
+                "name": "DeliveryAddress",
+                "fields": [
+                    {
+                        "name": "addressLine",
+                        "type": "string"
+                    },
+                    {
+                        "name": "city",
+                        "type": "string"
+                    },
+                    {
+                        "name": "state",
+                        "type": "string"
+                    },
+                    {
+                        "name": "pinCode",
+                        "type": "string"
+                    },
+                    {
+                        "name": "contactNumber",
+                        "type": "string"
+                    }
+                ]
+            }], "default": null
+        },
+        {
+            "name": "invoiceLineItems",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "record",
+                    "name": "LineItem",
+                    "fields": [
+                        {
+                            "name": "itemCode",
+                            "type": "string"
+                        },
+                        {
+                            "name": "itemDescription",
+                            "type": "string"
+                        },
+                        {
+                            "name": "itemPrice",
+                            "type": "double"
+                        },
+                        {
+                            "name": "itemQty",
+                            "type": "int"
+                        },
+                        {
+                            "name": "totalValue",
+                            "type": "double"
+                        }
+                    ]
+                },
+                "java-class": "java.util.List"
+            }
+        }
+    ]
+}

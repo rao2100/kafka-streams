@@ -1,0 +1,14 @@
+usecase: producer_pos_avro
+
+# kafka
+bootstrapServers: "localhost:9092"
+schemaRegistryUrl: "http://localhost:8081"
+
+appId: producer_pos_avro
+# topics
+inputTopic: "streams-pos-input-avro"
+
+schemas:
+  - "/home/ansible/Github/kafka-streams/kstreamApp/scripts/pos-avro/schema/avro/PosInvoiceAvro.avsc"
+
+produceEventCount: 10

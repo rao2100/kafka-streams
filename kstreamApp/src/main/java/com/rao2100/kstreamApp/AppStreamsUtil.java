@@ -5,16 +5,21 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.util.Assert;
 
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 import io.confluent.kafka.streams.serdes.avro.GenericAvroSerde;
 
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.reflect.ReflectData;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.avro.Schema;
 
-public class StreamsUtil {
+public class AppStreamsUtil {
 
-    private static Logger LOG = LoggerFactory.getLogger(StreamsUtil.class);
+    private static Logger LOG = LoggerFactory.getLogger(AppStreamsUtil.class);
 
     public static Properties getStreamsConfiguration(final String bootstrapServers, final String schemaRegistryServers,
             final String appId) {
@@ -40,4 +45,22 @@ public class StreamsUtil {
 
         return genericAvroSerde;
     }
+
+
+    public static GenericData.Record mapObjectToRecord(Object object) {
+        Assert.notNull(object, "object must not be null");
+        final Schema schema = ReflectData.get().getSchema(object.getClass());
+        System.out.println(schema);
+        final GenericData.Record record = new GenericData.Record(schema);
+        schema.getFields().forEach(r -> record.put(r.name(), PropertyAccessorFactory.forDirectFieldAccess(object).getPropertyValue(r.name())));
+        return record;
+    }
+
+    public static GenericData.Record mapObjectToRecord(Object object, Schema schema) {
+        Assert.notNull(object, "object must not be null");
+        final GenericData.Record record = new GenericData.Record(schema);
+        schema.getFields().forEach(r -> record.put(r.name(), PropertyAccessorFactory.forDirectFieldAccess(object).getPropertyValue(r.name())));
+        return record;
+    }
+    
 }

@@ -1,10 +1,13 @@
-package com.rao2100.kstreamApp.movies;
+package com.rao2100.kstreamApp.posAvroCustom;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -12,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
 
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
@@ -19,6 +23,7 @@ import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
+import org.apache.avro.reflect.ReflectData;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -26,12 +31,17 @@ import org.apache.kafka.common.serialization.IntegerSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import com.rao2100.kstreamApp.AppConfig;
+import com.rao2100.kstreamApp.AppStreamsUtil;
+import com.rao2100.kstreamApp.pos.datagenerator.InvoiceGeneratorAvro;
+import com.rao2100.kstreamApp.pos.types.LineItem;
+import com.rao2100.kstreamApp.pos.types.PosInvoice;
+import com.rao2100.kstreamApp.serde.JsonSerializer;
 
 @Component
-@ConditionalOnProperty(name = "usecase", havingValue = "producer_movies")
-public class ProducerMovies implements Runnable {
+@ConditionalOnProperty(name = "usecase", havingValue = "producer_pos_avro")
+public class ProducerPosSimulatorAvro implements Runnable {
 
-    private static Logger LOG = LoggerFactory.getLogger(ProducerMovies.class);
+    private static Logger LOG = LoggerFactory.getLogger(ProducerPosSimulatorAvro.class);
 
     @Autowired
     AppConfig appConfig;
@@ -40,15 +50,15 @@ public class ProducerMovies implements Runnable {
     public void run() {
 
         LOG.info("########################################");
-        LOG.info("running ProducerMovies");
+        LOG.info("running ProducerPosSimulatorAvro");
         LOG.info("########################################");
         LOG.info("appConfig : {}".format(appConfig.toString()));
 
-        KafkaProducer producer = new KafkaProducer<String, GenericRecord>(getProps());
 
         LOG.info("start sending messages...");
+        KafkaProducer<String, GenericRecord> producer = new KafkaProducer<>(getProps());
 
-        // String schemaPath = "/home/ansible/Github/kafka-streams/kstreamApp/scripts/movies/movies.avsc";
+        // String schemaPath = "/home/ansible/Github/kafka-streams/kstreamApp/scripts/pos-avro/schema/avro/PosInvoiceAvro.avsc";
         String schemaPath = appConfig.getSchemas().get(0);
         String valueSchemaString = "";
 
@@ -58,28 +68,15 @@ public class ProducerMovies implements Runnable {
             e.printStackTrace();
             System.exit(1);
         }
-
         Schema avroValueSchema = new Schema.Parser().parse(valueSchemaString);
 
-        ArrayList<String> movieList = new ArrayList<>();
-        movieList.add("Die Hard");
-        movieList.add("X-Men");
-        movieList.add("Star Wars");
-        movieList.add("5th Element");
-        movieList.add("Aliens");
-        movieList.add("Predator");
-        movieList.add("Tenent");
-        movieList.add("Jumanji");
-        movieList.add("Dune");
-        movieList.add("Star Trek");
-
         for (int i = 1; i <= appConfig.getProduceEventCount(); i++) {
-            GenericRecord valueRecord = new GenericData.Record(avroValueSchema);
-            valueRecord.put("title", movieList.get(i-1));
-            valueRecord.put("sale_ts", "2019-07-18T10:00:00Z");
-            valueRecord.put("ticket_total_value", 10 * i);
-            LOG.info(valueRecord.toString());
-            producer.send(new ProducerRecord<>(appConfig.getInputTopic(), "key-" + i, valueRecord));
+            InvoiceGeneratorAvro invoiceGenerator = InvoiceGeneratorAvro.getInstance();
+            GenericRecord valueRecord = invoiceGenerator.getNextInvoice(avroValueSchema);
+            System.out.println(valueRecord);
+            producer.send(new ProducerRecord<>(appConfig.getInputTopic(), valueRecord.get("storeID").toString(),
+                    valueRecord));
+
         }
 
         try {
